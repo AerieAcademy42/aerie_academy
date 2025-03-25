@@ -11,14 +11,11 @@ const EnquiryModal = ({ isOpen, onClose }) => {
   const [submitStatus, setSubmitStatus] = useState(null);
   const [validationMsg, setValidationMsg] = useState({});
   const [isExistingUser, setIsExistingUser] = useState(false);
-  const [initialLoading, setInitialLoading] = useState(false); // Changed to false by default
 
-  // Check if user has already submitted details before showing modal content
+  // Check if user has already submitted details in the background without showing a loader
   useEffect(() => {
     if (isOpen) {
       const checkExistingUser = async () => {
-        setInitialLoading(true);
-        
         // Get email from localStorage if available
         const savedEmail = localStorage.getItem('userEmail');
         
@@ -33,13 +30,12 @@ const EnquiryModal = ({ isOpen, onClose }) => {
             }
           } catch (error) {
             console.error('Error checking existing user:', error);
+            // Continue showing the form even if the check fails
           }
         }
-        
-        // Remove the artificial delay
-        setInitialLoading(false);
       };
       
+      // Run the check in background without waiting for it to show content
       checkExistingUser();
     }
   }, [isOpen]);
@@ -85,11 +81,10 @@ const EnquiryModal = ({ isOpen, onClose }) => {
         `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/contact`,
         formData
       );
-      
+      console.log(response);
       // Save email to localStorage to identify returning users
       localStorage.setItem('userEmail', formData.email);
       
-      console.log(response);
       setSubmitStatus({
         success: true,
         message: 'Thank you for your interest! We will contact you soon.'
@@ -120,20 +115,6 @@ const EnquiryModal = ({ isOpen, onClose }) => {
 
   if (!isOpen) return null;
 
-  // Show a simpler loading indicator with reduced height
-  if (initialLoading) {
-    return (
-      <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center p-4" aria-labelledby="modal-title" role="dialog" aria-modal="true">
-        <div className="relative bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-md mx-auto">
-          <div className="px-4 py-5 sm:p-6 flex flex-col items-center justify-center" style={{ height: '200px' }}>
-            <div className="animate-spin rounded-full h-10 w-10 border-b-2 border-indigo-600"></div>
-            <p className="mt-2 text-sm text-gray-500">Loading...</p>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   return (
     <div className="fixed inset-0 z-50 overflow-y-auto bg-gray-500 bg-opacity-75 flex items-center justify-center p-4" aria-labelledby="modal-title" role="dialog" aria-modal="true">
       <div className="relative bg-white rounded-lg overflow-hidden shadow-xl transform transition-all w-full max-w-md mx-auto">
@@ -149,7 +130,7 @@ const EnquiryModal = ({ isOpen, onClose }) => {
           </svg>
         </button>
         
-        <div className="px-4 py-5 sm:p-6 text-left"> {/* Added text-left class here */}
+        <div className="px-4 py-5 sm:p-6 text-left">
           <h3 className="text-xl font-semibold text-gray-900 mb-5">Enquire Now</h3>
           
           {isExistingUser ? (
