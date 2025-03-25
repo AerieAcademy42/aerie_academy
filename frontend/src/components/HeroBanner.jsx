@@ -7,7 +7,9 @@ const HeroBanner = () => {
   const [animatedIcons, setAnimatedIcons] = useState([false, false, false, false]);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isMobile, setIsMobile] = useState(false);
+  const [isTransitioning, setIsTransitioning] = useState(false);
   const featuresRef = useRef(null);
+  const bannerContainerRef = useRef(null);
   
   // Desktop banners
   const desktopBanners = [
@@ -75,8 +77,15 @@ const HeroBanner = () => {
   // Banner rotation effect with horizontal sliding animation
   useEffect(() => {
     const interval = setInterval(() => {
+      setIsTransitioning(true);
       setCurrentBanner((prev) => (prev + 1) % banners.length);
-    }, 5000); // Change banner every 5 seconds
+      
+      // Reset transition flag after animation completes
+      setTimeout(() => {
+        setIsTransitioning(false);
+      }, 2000); // Slightly shorter than transition duration to ensure it completes
+      
+    }, 4000); // Changed from 5000 to 4000 to increase rotation speed
     
     return () => clearInterval(interval);
   }, [banners.length]);
@@ -143,6 +152,18 @@ const HeroBanner = () => {
     };
   }, [features]); // Include features as a dependency since we use it inside
   
+  // Function to handle manual banner navigation
+  const goToBanner = (index) => {
+    if (isTransitioning) return; // Prevent clicking during transitions
+    setIsTransitioning(true);
+    setCurrentBanner(index);
+    
+    // Reset transition flag after animation completes
+    setTimeout(() => {
+      setIsTransitioning(false);
+    }, 2000);
+  };
+  
   // Function to open the modal
   const openModal = () => {
     setIsModalOpen(true);
@@ -159,9 +180,12 @@ const HeroBanner = () => {
       <div className="relative">
         <div className="container mx-auto">
           {/* Background image slider with horizontal sliding animation */}
-          <div className="w-full overflow-hidden relative h-[668px] md:h-[648px]">
+          <div 
+            ref={bannerContainerRef} 
+            className="w-full overflow-hidden relative h-[668px] md:h-[648px]"
+          >
             <div 
-              className="absolute inset-0 flex transition-transform duration-[3000ms] ease-in-out"
+              className="absolute inset-0 flex transition-transform duration-[2000ms] ease-in-out will-change-transform"
               style={{ transform: `translateX(-${currentBanner * 100}%)` }}
             >
               {banners.map((banner, index) => (
@@ -170,6 +194,7 @@ const HeroBanner = () => {
                   className="min-w-full h-full flex-shrink-0 cursor-pointer" 
                   onClick={openModal}
                   aria-label="Click to enquire now"
+                  style={{ flex: '0 0 100%' }} // Ensure exact 100% width
                 >
                   <img 
                     src={banner} 
@@ -228,7 +253,8 @@ const HeroBanner = () => {
             className={`w-2 h-2 mx-1 rounded-full transition-all duration-500 ${
               currentBanner === index ? 'bg-indigo-600 w-4' : 'bg-gray-300'
             }`}
-            onClick={() => setCurrentBanner(index)}
+            onClick={() => goToBanner(index)}
+            disabled={isTransitioning}
             aria-label={`Go to slide ${index + 1}`}
           />
         ))}
