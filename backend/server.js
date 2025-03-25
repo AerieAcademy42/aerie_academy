@@ -9,12 +9,23 @@ dotenv.config();
 // Import routes
 const contactRoutes = require('./routes/contactRoutes');
 
-
 // Initialize app
 const app = express();
 
-// Middleware
-app.use(cors());
+// CORS configuration
+const corsOptions = {
+  origin: [
+    'https://aerie-academy-tigu.vercel.app',
+    'http://localhost:3000', // Keep this for local development
+  ],
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization'],
+  credentials: true,
+  optionsSuccessStatus: 200
+};
+
+// Apply CORS with options
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Connect to MongoDB
@@ -29,6 +40,9 @@ app.use('/api/contact', contactRoutes);
 app.get('/', (req, res) => {
   res.send('Aerie Academy API is running');
 });
+
+// CORS preflight for all routes
+app.options('*', cors(corsOptions));
 
 // Error handling middleware
 app.use((err, req, res, next) => {
