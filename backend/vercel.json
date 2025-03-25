@@ -12,7 +12,7 @@
       "dest": "server.js",
       "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
       "headers": {
-        "Access-Control-Allow-Origin": "https://aerie-academy-tigu.vercel.app",
+        "Access-Control-Allow-Origin": "https://gate2026.aerieacademy.com, https://aerie-academy-tigu.vercel.app",
         "Access-Control-Allow-Methods": "GET, POST, PUT, DELETE, OPTIONS",
         "Access-Control-Allow-Headers": "Content-Type, Authorization"
       }
