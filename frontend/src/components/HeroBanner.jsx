@@ -13,18 +13,18 @@ const HeroBanner = () => {
   
   // Desktop banners
   const desktopBanners = [
+    '/images/hero-bg.png',
     '/images/hero_banner.png',
     '/images/1.png',
     '/images/6.png',    // This is the banner that needs the clickable button
-    '/images/hero-bg.png'
   ];
   
   // Mobile banners
   const mobileBanners = [
+    '/images/Phone_Banners/5.png',
     '/images/Phone_Banners/1.png',
     '/images/Phone_Banners/2.png',
     '/images/Phone_Banners/3.png',
-    '/images/Phone_Banners/5.png'
   ];
 
   // Get current banners based on screen size
