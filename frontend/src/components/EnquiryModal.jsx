@@ -12,6 +12,25 @@ const EnquiryModal = ({ isOpen, onClose }) => {
   const [validationMsg, setValidationMsg] = useState({});
   const [isExistingUser, setIsExistingUser] = useState(false);
 
+  // Google Tag conversion helper function
+  const gtag_report_conversion = (url) => {
+    const callback = () => {
+      if (typeof url !== 'undefined') {
+        window.location = url;
+      }
+    };
+
+    if (typeof window.gtag === 'function') {
+      window.gtag('event', 'conversion', {
+        'send_to': 'AW-16866101157/_FW8CODonrYaEKWPseo-',
+        'event_callback': callback
+      });
+    } else {
+      console.warn('gtag is not defined');
+    }
+    return false;
+  };
+
   // Check if user has already submitted details in the background without showing a loader
   useEffect(() => {
     if (isOpen) {
@@ -24,7 +43,6 @@ const EnquiryModal = ({ isOpen, onClose }) => {
             const response = await axios.get(
               `${process.env.REACT_APP_API_URL || 'http://localhost:5000'}/api/contact/check-email?email=${savedEmail}`
             );
-            
             if (response.data.exists) {
               setIsExistingUser(true);
             }
@@ -34,8 +52,6 @@ const EnquiryModal = ({ isOpen, onClose }) => {
           }
         }
       };
-      
-      // Run the check in background without waiting for it to show content
       checkExistingUser();
     }
   }, [isOpen]);
@@ -46,7 +62,7 @@ const EnquiryModal = ({ isOpen, onClose }) => {
       ...prev,
       [name]: value
     }));
-    
+
     // Clear validation message when user starts typing
     if (validationMsg[name]) {
       setValidationMsg(prev => ({
@@ -90,7 +106,6 @@ const EnquiryModal = ({ isOpen, onClose }) => {
         message: 'Thank you for your interest! We will contact you soon.'
       });
 
-    
       // Reset form
       setFormData({
         name: '',
@@ -98,13 +113,9 @@ const EnquiryModal = ({ isOpen, onClose }) => {
         phone: ''
       });
 
-     
-  windows.gtag('event', 'conversion', {
-      'send_to': 'AW-16866101157/_FW8CODonrYaEKWPseo-'
-  });
+      // Trigger Google Tag Manager conversion event using the defined function
+      gtag_report_conversion();
 
-
-      
     } catch (error) {
       console.error('Submission error:', error);
       setSubmitStatus({
@@ -332,4 +343,3 @@ const EnquiryModal = ({ isOpen, onClose }) => {
 };
 
 export default EnquiryModal;
-
