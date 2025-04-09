@@ -90,8 +90,6 @@ const EnquiryModal = ({ isOpen, onClose }) => {
         message: 'Thank you for your interest! We will contact you soon.'
       });
 
-  gtag('event', 'conversion', {
-      'send_to': 'AW-16866101157/_FW8CODonrYaEKWPseo-',
     
       // Reset form
       setFormData({
@@ -99,6 +97,9 @@ const EnquiryModal = ({ isOpen, onClose }) => {
         email: '',
         phone: ''
       });
+
+      window.gtag('event', 'conversion', {
+      'send_to': 'AW-16866101157/_FW8CODonrYaEKWPseo-',
       
     } catch (error) {
       console.error('Submission error:', error);
