@@ -89,22 +89,10 @@ const EnquiryModal = ({ isOpen, onClose }) => {
         success: true,
         message: 'Thank you for your interest! We will contact you soon.'
       });
-      <!-- Event snippet for Lead_Submission_Batch1_GATE2026_09042025 conversion page
-In your html page, add the snippet and call gtag_report_conversion when someone clicks on the chosen link or button. -->
-<script>
-function gtag_report_conversion(url) {
-  var callback = function () {
-    if (typeof(url) != 'undefined') {
-      window.location = url;
-    }
-  };
+
   gtag('event', 'conversion', {
       'send_to': 'AW-16866101157/_FW8CODonrYaEKWPseo-',
-      'event_callback': callback
-  });
-  return false;
-}
-</script>
+    
       // Reset form
       setFormData({
         name: '',
