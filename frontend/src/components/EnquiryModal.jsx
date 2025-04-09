@@ -98,8 +98,12 @@ const EnquiryModal = ({ isOpen, onClose }) => {
         phone: ''
       });
 
-      window.gtag('event', 'conversion', {
-      'send_to': 'AW-16866101157/_FW8CODonrYaEKWPseo-',
+     
+  windows.gtag('event', 'conversion', {
+      'send_to': 'AW-16866101157/_FW8CODonrYaEKWPseo-'
+  });
+
+
       
     } catch (error) {
       console.error('Submission error:', error);
