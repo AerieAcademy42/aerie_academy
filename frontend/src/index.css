@@ -38,22 +38,25 @@
     @apply text-[32px] leading-[48px] text-[#09090B] font-sans my-[8px];
   }
   @layer components {
-  /* This class must be applied to the Job Title <h3> or <h2> tag */
-  .job-title-fixed {
+  /* APPLY THIS CLASS TO YOUR JOB TITLE H3/H2 TAG */
+  .job-card-title-fixed {
     display: -webkit-box;
-    -webkit-line-clamp: 3; /* Limit to 3 lines */
+    -webkit-line-clamp: 3; /* Limit text to 3 lines */
     -webkit-box-orient: vertical;
     overflow: hidden;
-    height: 4.5rem; /* Exact height for 3 lines (1.5rem x 3) */
+    min-height: 4.5rem; /* Exactly 3 lines (1.5rem x 3) */
     line-height: 1.5rem;
-    margin-bottom: 0.5rem;
-    font-weight: 700;
+    @apply font-bold text-gray-900 mb-2;
   }
 
-  /* Ensures card is always same height */
-  .job-card-container {
-    @apply bg-white rounded-xl shadow-sm border border-gray-100 p-5 flex flex-col;
-    height: 400px; /* Adjust based on your needs */
+  /* Force description to exactly 2 lines */
+  .job-card-desc-fixed {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    height: 3rem;
+    @apply text-gray-600 text-sm;
   }
 }
 }
